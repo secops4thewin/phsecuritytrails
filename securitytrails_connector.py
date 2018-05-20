@@ -203,8 +203,13 @@ class SecuritytrailsConnector(BaseConnector):
             # so just return from here
             return action_result.get_status()
 
-        # Convert output to json
-        response = json.loads(result)
+        # Test to see if response can be parsed
+        if json.loads(result):
+            response = json.loads(result)
+
+        # If it cannot be parsed throw error message
+        else:
+            return action_result.set_status(phantom.APP_ERROR, status_message="Error Passing JSON output.  Error Message: {}".format(result))
 
         # Create new python dictionary to store output
         data_output = {}
@@ -284,8 +289,13 @@ class SecuritytrailsConnector(BaseConnector):
             # so just return from here
             return action_result.get_status()
 
-        # Convert output to json
-        response = json.loads(result)
+        # Test to see if response can be parsed
+        if json.loads(result):
+            response = json.loads(result)
+
+        # If it cannot be parsed throw error message
+        else:
+            return action_result.set_status(phantom.APP_ERROR, status_message="Error Passing JSON output.  Error Message: {}".format(result))
 
         # Create new python dictionary to store output
         data_output = response
@@ -339,8 +349,13 @@ class SecuritytrailsConnector(BaseConnector):
             # so just return from here
             return action_result.get_status()
 
-        # Convert output to json
-        response = json.loads(result)
+        # Test to see if response can be parsed
+        if json.loads(result):
+            response = json.loads(result)
+
+        # If it cannot be parsed throw error message
+        else:
+            return action_result.set_status(phantom.APP_ERROR, status_message="Error Passing JSON output.  Error Message: {}".format(result))
 
         # Create new python dictionary to store output
         data_output = response
@@ -407,8 +422,13 @@ class SecuritytrailsConnector(BaseConnector):
             # so just return from here
             return action_result.get_status()
 
-        # Convert output to json
-        response = json.loads(result)
+        # Test to see if response can be parsed
+        if json.loads(result):
+            response = json.loads(result)
+
+        # If it cannot be parsed throw error message
+        else:
+            return action_result.set_status(phantom.APP_ERROR, status_message="Error Passing JSON output.  Error Message: {}".format(result))
 
         # Create new python dictionary to store output
         data_output = response
@@ -462,8 +482,13 @@ class SecuritytrailsConnector(BaseConnector):
             # so just return from here
             return action_result.get_status()
 
-        # Convert output to json
-        response = json.loads(result)
+        # Test to see if response can be parsed
+        if json.loads(result):
+            response = json.loads(result)
+
+        # If it cannot be parsed throw error message
+        else:
+            return action_result.set_status(phantom.APP_ERROR, status_message="Error Passing JSON output.  Error Message: {}".format(result))
 
         # If domain has no tags
         if len(response['tags'] == 0):
@@ -522,8 +547,13 @@ class SecuritytrailsConnector(BaseConnector):
             # so just return from here
             return action_result.get_status()
 
-        # Convert output to json
-        response = json.loads(result)
+        # Test to see if response can be parsed
+        if json.loads(result):
+            response = json.loads(result)
+
+        # If it cannot be parsed throw error message
+        else:
+            return action_result.set_status(phantom.APP_ERROR, status_message="Error Passing JSON output.  Error Message: {}".format(result))
 
         # Create an empty array for pushing subdomains into
         outputArray = []
@@ -587,8 +617,13 @@ class SecuritytrailsConnector(BaseConnector):
             # so just return from here
             return action_result.get_status()
 
-        # Convert output to json
-        response = json.loads(result)
+        # Test to see if response can be parsed
+        if json.loads(result):
+            response = json.loads(result)
+
+        # If it cannot be parsed throw error message
+        else:
+            return action_result.set_status(phantom.APP_ERROR, status_message="Error Passing JSON output.  Error Message: {}".format(result))
 
         # Format output
         outputArray = []
