@@ -1,0 +1,829 @@
+{
+    "appid": "f6e3e746-0ac4-4703-a569-2f88df2d9d3b",
+    "name": "SecurityTrails",
+    "description": "Provides interface to SecurityTrails API",
+    "type": "information",
+    "product_vendor": "SecurityTrails",
+    "logo": "securitytrails.png",
+    "logo_dark": "securitytrails_dark.png",
+    "product_name": "API",
+    "product_version_regex": ".*",
+    "publisher": "Domenico Perre",
+    "license": "Copyright (c) Domenico Perre, 2018",
+    "app_version": "1.0.0",
+    "utctime_updated": "2018-04-30T10:29:53.916185Z",
+    "package_name": "phantom_securitytrails",
+    "main_module": "securitytrails_connector.pyc",
+    "min_phantom_version": "3.5.205",
+    "app_wizard_version": "1.0.0",
+    "configuration": {
+        "api_key": {
+            "description": "API Key for Connectivity",
+            "data_type": "string",
+            "required": true,
+            "value_list": [],
+            "default": "",
+            "order": 0
+        }
+    },
+    "actions": [
+        {
+            "action": "test connectivity",
+            "identifier": "test_connectivity",
+            "description": "Validate the asset configuration for connectivity using supplied configuration",
+            "verbose": "",
+            "type": "test",
+            "read_only": true,
+            "parameters": {},
+            "output": [],
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "lookup domain",
+            "identifier": "lookup_domain",
+            "description": "Check for the presence of a domain in a threat intelligence feed",
+            "verbose": "",
+            "type": "investigate",
+            "read_only": true,
+            "parameters": {
+                "domain": {
+                    "description": "Domain to lookup",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": true,
+                    "contains": [
+                        "domain"
+                    ],
+                    "value_list": [],
+                    "default": "",
+                    "order": 0
+                }
+            },
+            "output": [
+                {
+                    "data_path": "action_result.parameter.domain",
+                    "data_type": "string",
+                    "contains": [
+                        "domain"
+                    ],
+                    "column_name": "domain",
+                    "column_order": 0,
+                    "example_values": [
+                        "netflix.com"
+                    ]
+                },
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "column_name": "status",
+                    "column_order": 1,
+                    "example_values": [
+                        "success"
+                    ]
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string",
+                    "example_values": [
+                        "Domain: netflix.com"
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.a.*.ip",
+                    "data_type": "string",
+                    "column_name": "ip",
+                    "column_order": 3,
+                    "example_values": [
+                        "54.208.233.73"
+                    ],
+                    "contains": [
+                        "ip"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.a.*.type",
+                    "data_type": "string",
+                    "column_name": "record_type",
+                    "column_order": 2,
+                    "example_values": [
+                        "a"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.aaaa.*.type",
+                    "data_type": "string",
+                    "column_name": "record_type",
+                    "column_order": 2,
+                    "example_values": [
+                        "aaaa"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.aaaa.*.ipv6",
+                    "data_type": "string",
+                    "column_name": "ipv6",
+                    "column_order": 3,
+                    "example_values": [
+                        "2406:DA00:FF00::36D0:E949"
+                    ],
+                    "contains": [
+                        "ipv6"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.hostname",
+                    "data_type": "string",
+                    "example_values": [
+                        "netflix.com"
+                    ],
+                    "contains": [
+                        "host name"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.alexa_rank",
+                    "data_type": "numeric",
+                    "column_name": "alexa_rank",
+                    "column_order": 4,
+                    "example_values": [
+                        32
+                    ]
+                },
+                {
+                    "data_path": "action_result.summary.domain",
+                    "data_type": "string",
+                    "example_values": [
+                        "netflix.com"
+                    ],
+                    "contains": [
+                        "domain"
+                    ]
+                }
+            ],
+            "render": {
+                "type": "table"
+            },
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "whois domain",
+            "identifier": "whois_domain",
+            "description": "Execute whois lookup on the given domain",
+            "verbose": "",
+            "type": "investigate",
+            "read_only": true,
+            "parameters": {
+                "domain": {
+                    "description": "Domain to query",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": true,
+                    "contains": [
+                        "domain"
+                    ],
+                    "value_list": [],
+                    "default": "",
+                    "order": 0
+                }
+            },
+            "output": [
+                {
+                    "data_path": "action_result.parameter.domain",
+                    "data_type": "string",
+                    "contains": [
+                        "domain"
+                    ],
+                    "column_name": "domain",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "column_name": "status",
+                    "column_order": 1
+                },
+                {
+                    "data_path": "action_result.data.*.telephone",
+                    "data_type": "string",
+                    "column_name": "telephone",
+                    "column_order": 2,
+                    "contains": [
+                        "telephone"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.fax",
+                    "data_type": "string",
+                    "column_name": "fax",
+                    "column_order": 3,
+                    "contains": [
+                        "fax"
+                    ]
+                },
+
+                {
+                    "data_path": "action_result.data.*.name",
+                    "data_type": "string",
+                    "column_name": "name",
+                    "column_order": 4,
+                    "contains": [
+                        "name"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.countryCode",
+                    "data_type": "string",
+                    "column_name": "countryCode",
+                    "column_order": 5
+                },
+                {
+                    "data_path": "action_result.data.*.state",
+                    "data_type": "string",
+                    "column_name": "state",
+                    "column_order": 6
+                },
+                {
+                    "data_path": "action_result.data.*.city",
+                    "data_type": "string",
+                    "column_name": "city",
+                    "column_order": 7
+                },
+                {
+                    "data_path": "action_result.data.*.street1",
+                    "data_type": "string",
+                    "column_name": "street",
+                    "column_order": 8,
+                    "contains": [
+                        "street"
+                    ]
+                },
+                
+                {
+                    "data_path": "action_result.data.*.email",
+                    "data_type": "string",
+                    "column_name": "email",
+                    "column_order": 9,
+                    "contains": [
+                        "telephone"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.type",
+                    "data_type": "string",
+                    "column_name": "registrantType",
+                    "column_order": 10
+                },
+                {
+                    "data_path": "action_result.data.*.organization",
+                    "data_type": "string",
+                    "column_name": "organization",
+                    "column_order": 11
+                },
+
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric"
+                }
+            ],
+            "render": {
+                "type": "table"
+            },
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "whois history",
+            "identifier": "whois_history",
+            "description": "Obtain historic whois records for a domain name",
+            "verbose": "",
+            "type": "investigate",
+            "read_only": true,
+            "parameters": {
+                "domain": {
+                    "description": "Domain to query",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": true,
+                    "contains": [
+                        "domain"
+                    ],
+                    "value_list": [],
+                    "default": "",
+                    "order": 0
+                }
+            },
+            "output": [
+                {
+                    "data_path": "action_result.parameter.domain",
+                    "data_type": "string",
+                    "contains": [
+                        "domain"
+                    ],
+                    "column_name": "domain",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "column_name": "status",
+                    "column_order": 1
+                },
+                {
+                    "data_path": "action_result.data.*.telephone",
+                    "data_type": "string",
+                    "column_name": "telephone",
+                    "column_order": 2,
+                    "contains": [
+                        "telephone"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.fax",
+                    "data_type": "string",
+                    "column_name": "fax",
+                    "column_order": 3,
+                    "contains": [
+                        "fax"
+                    ]
+                },
+
+                {
+                    "data_path": "action_result.data.*.name",
+                    "data_type": "string",
+                    "column_name": "name",
+                    "column_order": 4,
+                    "contains": [
+                        "name"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.countryCode",
+                    "data_type": "string",
+                    "column_name": "countryCode",
+                    "column_order": 5
+                },
+                {
+                    "data_path": "action_result.data.*.state",
+                    "data_type": "string",
+                    "column_name": "state",
+                    "column_order": 6
+                },
+                {
+                    "data_path": "action_result.data.*.city",
+                    "data_type": "string",
+                    "column_name": "city",
+                    "column_order": 7
+                },
+                {
+                    "data_path": "action_result.data.*.street1",
+                    "data_type": "string",
+                    "column_name": "street",
+                    "column_order": 8,
+                    "contains": [
+                        "street"
+                    ]
+                },
+                
+                {
+                    "data_path": "action_result.data.*.email",
+                    "data_type": "string",
+                    "column_name": "email",
+                    "column_order": 9,
+                    "contains": [
+                        "telephone"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.type",
+                    "data_type": "string",
+                    "column_name": "registrantType",
+                    "column_order": 10
+                },
+                {
+                    "data_path": "action_result.data.*.organization",
+                    "data_type": "string",
+                    "column_name": "organization",
+                    "column_order": 11
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric"
+                }
+            ],
+            "render": {
+                "type": "table"
+            },
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "domain searcher",
+            "identifier": "domain_searcher",
+            "description": "Filter and search specific records using this endpoint.",
+            "verbose": "Filter and search specific records using this endpoint. Using simple filter composition, any type of data fetching is possible. The post object uses a very simple dsl where the json key represents the type to filter on and the value. Given this, you can create any number of queries, depending on the need.",
+            "type": "investigate",
+            "read_only": false,
+            "parameters": {
+                "filter": {
+                    "description": "Filter search, this is used to specify what type of record  you want to search against",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": false,
+                    "contains": [],
+                    "value_list": [
+                        "ipv4",
+                        "ipv6",
+                        "mx",
+                        "ns",
+                        "cname",
+                        "subdomain",
+                        "apex_domain",
+                        "soa_email",
+                        "tld",
+                        "whois_email",
+                        "whois_street1",
+                        "whois_street2",
+                        "whois_street3",
+                        "whois_street4",
+                        "whois_telephone",
+                        "whois_postalCode",
+                        "whois_organization",
+                        "whois_name",
+                        "whois_fax",
+                        "whois_city"
+                    ],
+                    "default": "",
+                    "order": 0
+                },
+                "filterstring": {
+                    "description": "Filter string, this is used to provide a string value.  For example if you selected apex_domain above you will enter in this panel the domain you want to search",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": false,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "",
+                    "order": 1
+                },
+                "keyword": {
+                    "description": "keyword filter that is optional. An example is if you select 'mx' as the filter and 'alt4.aspmx.l.google.com' as the filterstring you could type 'stackover' to retrieve all mx records related to stackoverflow",
+                    "data_type": "string",
+                    "required": false,
+                    "primary": false,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "",
+                    "order": 2
+                }
+            },
+            "output": [
+                {
+                    "data_path": "action_result.parameter.domain",
+                    "data_type": "string",
+                    "contains": [
+                        "domain"
+                    ],
+                    "column_name": "domain",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.parameter.filter",
+                    "data_type": "string",
+                    "contains": [],
+                    "column_name": "filter",
+                    "column_order": 1
+                },
+                {
+                    "data_path": "action_result.parameter.filterstring",
+                    "data_type": "string",
+                    "contains": [],
+                    "column_name": "filterstring",
+                    "column_order": 2
+                },
+                {
+                    "data_path": "action_result.parameter.keyword",
+                    "data_type": "string",
+                    "contains": [],
+                    "column_name": "keyword",
+                    "column_order": 3
+                },
+                {
+                    "data_path": "action_result.data.*.hostname",
+                    "data_type": "string",
+                    "example_values": [
+                        "netflix.com"
+                    ],
+                    "contains": [
+                        "host name"
+                    ],
+                    "column_name": "hostname",
+                    "column_order": 4
+                },
+                {
+                    "data_path": "action_result.data.*.alexa_rank",
+                    "data_type": "numeric",
+                    "column_name": "alexa_rank",
+                    "column_order": 5,
+                    "example_values": [
+                        32
+                    ]
+                },
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "column_name": "status",
+                    "column_order": 4
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric"
+                }
+            ],
+            "render": {
+                "type": "table"
+            },
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "domain category",
+            "identifier": "domain_category",
+            "description": "Returns tags for a given domain.",
+            "verbose": "Returns tags for a given domain. Such as gambling, sports, news.",
+            "type": "investigate",
+            "read_only": false,
+            "parameters": {
+                "domain": {
+                    "description": "Domain to be queried",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": false,
+                    "contains": [
+                        "domain"
+                    ],
+                    "value_list": [],
+                    "default": "",
+                    "order": 0
+                }
+            },
+            "output": [
+                {
+                    "data_path": "action_result.parameter.domain",
+                    "data_type": "string",
+                    "contains": [
+                        "domain"
+                    ],
+                    "column_name": "domain",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.data.*.tags",
+                    "data_type": "string",
+                    "contains": [],
+                    "column_name": "tags",
+                    "column_order": 1
+                },
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "column_name": "status",
+                    "column_order": 2
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric"
+                }
+            ],
+            "render": {
+                "type": "table"
+            },
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "domain subdomain",
+            "identifier": "domain_subdomain",
+            "description": "Returns subdomains for a given domain.",
+            "verbose": "Returns subdomains for a given domain.",
+            "type": "investigate",
+            "read_only": false,
+            "parameters": {
+                "domain": {
+                    "description": "Domain to be queried",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": false,
+                    "contains": [
+                        "domain"
+                    ],
+                    "value_list": [],
+                    "default": "",
+                    "order": 0
+                }
+            },
+            "output": [
+                {
+                    "data_path": "action_result.parameter.domain",
+                    "data_type": "string",
+                    "contains": [
+                        "domain"
+                    ],
+                    "column_name": "domain",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.data.*.domain",
+                    "data_type": "string",
+                    "contains": [
+                        "domain"
+                    ],
+                    "column_name": "subdomain",
+                    "column_order": 1
+                },
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "column_name": "status",
+                    "column_order": 2
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric"
+                }
+            ],
+            "render": {
+                "type": "table"
+            },
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "domain history",
+            "identifier": "domain_history",
+            "description": "Lists out specific historical information about the given domain parameter.",
+            "verbose": "Lists out specific historical information about the given domain parameter.",
+            "type": "investigate",
+            "read_only": false,
+            "parameters": {
+                "domain": {
+                    "description": "Domain to be queried",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": false,
+                    "contains": [
+                        "domain"
+                    ],
+                    "value_list": [],
+                    "default": "",
+                    "order": 0
+                },
+                "record_type": {
+                    "description": "DNS record type",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": false,
+                    "contains": [
+                        "*"
+                    ],
+                    "value_list": [
+                        "a",
+                        "aaaa",
+                        "mx",
+                        "ns",
+                        "txt",
+                        "soa"
+                    ],
+                    "default": "a",
+                    "order": 1
+                }
+            },
+            "output": [
+                {
+                    "data_path": "action_result.parameter.domain",
+                    "data_type": "string",
+                    "contains": [
+                        "domain"
+                    ],
+                    "column_name": "domain",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.parameter.record_type",
+                    "data_type": "string",
+                    "contains": [
+                        "*"
+                    ],
+                    "column_name": "record_type",
+                    "column_order": 1
+                },
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "column_name": "status",
+                    "column_order": 2
+                },
+                {
+                    "data_path": "action_result.data.*.ip",
+                    "data_type": "string",
+                    "column_name": "ip",
+                    "column_order": 3,
+                    "example_values": [
+                        "54.208.233.73"
+                    ],
+                    "contains": [
+                        "ip"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.first_seen",
+                    "data_type": "string",
+                    "column_name": "first_seen",
+                    "column_order": 4,
+                    "contains": [
+                        "date"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.last_seen",
+                    "data_type": "string",
+                    "column_name": "last_seen",
+                    "column_order": 5,
+                    "contains": [
+                        "date"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.u'organizations",
+                    "data_type": "string",
+                    "column_name": "organization",
+                    "column_order": 6
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric"
+                }
+            ],
+            "render": {
+                "type": "table"
+            },
+            "versions": "EQ(*)"
+        }
+    ]
+}
