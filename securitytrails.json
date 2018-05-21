@@ -217,7 +217,7 @@
                     "column_order": 1
                 },
                 {
-                    "data_path": "action_result.data.*.telephone",
+                    "data_path": "action_result.data.*.contacts.*.telephone",
                     "data_type": "string",
                     "column_name": "telephone",
                     "column_order": 2,
@@ -226,7 +226,7 @@
                     ]
                 },
                 {
-                    "data_path": "action_result.data.*.fax",
+                    "data_path": "action_result.data.*.contacts.*.fax",
                     "data_type": "string",
                     "column_name": "fax",
                     "column_order": 3,
@@ -236,7 +236,7 @@
                 },
 
                 {
-                    "data_path": "action_result.data.*.name",
+                    "data_path": "action_result.data.*.contacts.*.name",
                     "data_type": "string",
                     "column_name": "name",
                     "column_order": 4,
@@ -245,25 +245,25 @@
                     ]
                 },
                 {
-                    "data_path": "action_result.data.*.countryCode",
+                    "data_path": "action_result.data.*.contacts.*.countryCode",
                     "data_type": "string",
                     "column_name": "countryCode",
                     "column_order": 5
                 },
                 {
-                    "data_path": "action_result.data.*.state",
+                    "data_path": "action_result.data.*.contacts.*.state",
                     "data_type": "string",
                     "column_name": "state",
                     "column_order": 6
                 },
                 {
-                    "data_path": "action_result.data.*.city",
+                    "data_path": "action_result.data.*.contacts.*.city",
                     "data_type": "string",
                     "column_name": "city",
                     "column_order": 7
                 },
                 {
-                    "data_path": "action_result.data.*.street1",
+                    "data_path": "action_result.data.*.contacts.*.street1",
                     "data_type": "string",
                     "column_name": "street",
                     "column_order": 8,
@@ -273,7 +273,7 @@
                 },
                 
                 {
-                    "data_path": "action_result.data.*.email",
+                    "data_path": "action_result.data.*.contacts.*.email",
                     "data_type": "string",
                     "column_name": "email",
                     "column_order": 9,
@@ -282,13 +282,13 @@
                     ]
                 },
                 {
-                    "data_path": "action_result.data.*.type",
+                    "data_path": "action_result.data.*.contacts.*.type",
                     "data_type": "string",
                     "column_name": "registrantType",
                     "column_order": 10
                 },
                 {
-                    "data_path": "action_result.data.*.organization",
+                    "data_path": "action_result.data.*.contacts.*.organization",
                     "data_type": "string",
                     "column_name": "organization",
                     "column_order": 11
@@ -305,6 +305,16 @@
                 {
                     "data_path": "summary.total_objects_successful",
                     "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.summary.domain",
+                    "data_type": "string",
+                    "example_values": [
+                        "netflix.com"
+                    ],
+                    "contains": [
+                        "domain"
+                    ]
                 }
             ],
             "render": {
@@ -350,7 +360,7 @@
                     "column_order": 1
                 },
                 {
-                    "data_path": "action_result.data.*.telephone",
+                    "data_path": "action_result.data.*.result.items.*.contact.*.telephone",
                     "data_type": "string",
                     "column_name": "telephone",
                     "column_order": 2,
@@ -359,7 +369,7 @@
                     ]
                 },
                 {
-                    "data_path": "action_result.data.*.fax",
+                    "data_path": "action_result.data.*.result.items.*.contact.*.fax",
                     "data_type": "string",
                     "column_name": "fax",
                     "column_order": 3,
@@ -369,7 +379,7 @@
                 },
 
                 {
-                    "data_path": "action_result.data.*.name",
+                    "data_path": "action_result.data.*.result.items.*.contact.*.name",
                     "data_type": "string",
                     "column_name": "name",
                     "column_order": 4,
@@ -378,25 +388,25 @@
                     ]
                 },
                 {
-                    "data_path": "action_result.data.*.countryCode",
+                    "data_path": "action_result.data.*.result.items.*.contact.*.countryCode",
                     "data_type": "string",
                     "column_name": "countryCode",
                     "column_order": 5
                 },
                 {
-                    "data_path": "action_result.data.*.state",
+                    "data_path": "action_result.data.*.result.items.*.contact.*.state",
                     "data_type": "string",
                     "column_name": "state",
                     "column_order": 6
                 },
                 {
-                    "data_path": "action_result.data.*.city",
+                    "data_path": "action_result.data.*.result.items.*.contact.*.city",
                     "data_type": "string",
                     "column_name": "city",
                     "column_order": 7
                 },
                 {
-                    "data_path": "action_result.data.*.street1",
+                    "data_path": "action_result.data.*.result.items.*.contact.*.street1",
                     "data_type": "string",
                     "column_name": "street",
                     "column_order": 8,
@@ -406,7 +416,7 @@
                 },
                 
                 {
-                    "data_path": "action_result.data.*.email",
+                    "data_path": "action_result.data.*.result.items.*.contact.*.email",
                     "data_type": "string",
                     "column_name": "email",
                     "column_order": 9,
@@ -415,13 +425,13 @@
                     ]
                 },
                 {
-                    "data_path": "action_result.data.*.type",
+                    "data_path": "action_result.data.*.result.items.*.contact.*.type",
                     "data_type": "string",
                     "column_name": "registrantType",
                     "column_order": 10
                 },
                 {
-                    "data_path": "action_result.data.*.organization",
+                    "data_path": "action_result.data.*.result.items.*.contact.*.organization",
                     "data_type": "string",
                     "column_name": "organization",
                     "column_order": 11
@@ -437,6 +447,16 @@
                 {
                     "data_path": "summary.total_objects_successful",
                     "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.summary.domain",
+                    "data_type": "string",
+                    "example_values": [
+                        "netflix.com"
+                    ],
+                    "contains": [
+                        "domain"
+                    ]
                 }
             ],
             "render": {
@@ -506,34 +526,25 @@
             },
             "output": [
                 {
-                    "data_path": "action_result.parameter.domain",
-                    "data_type": "string",
-                    "contains": [
-                        "domain"
-                    ],
-                    "column_name": "domain",
-                    "column_order": 0
-                },
-                {
                     "data_path": "action_result.parameter.filter",
                     "data_type": "string",
                     "contains": [],
                     "column_name": "filter",
-                    "column_order": 1
+                    "column_order": 0
                 },
                 {
                     "data_path": "action_result.parameter.filterstring",
                     "data_type": "string",
                     "contains": [],
                     "column_name": "filterstring",
-                    "column_order": 2
+                    "column_order": 1
                 },
                 {
                     "data_path": "action_result.parameter.keyword",
                     "data_type": "string",
                     "contains": [],
                     "column_name": "keyword",
-                    "column_order": 3
+                    "column_order": 2
                 },
                 {
                     "data_path": "action_result.data.*.hostname",
@@ -573,6 +584,16 @@
                 {
                     "data_path": "summary.total_objects_successful",
                     "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.summary.domain",
+                    "data_type": "string",
+                    "example_values": [
+                        "netflix.com"
+                    ],
+                    "contains": [
+                        "domain"
+                    ]
                 }
             ],
             "render": {
@@ -635,6 +656,16 @@
                 {
                     "data_path": "summary.total_objects_successful",
                     "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.summary.domain",
+                    "data_type": "string",
+                    "example_values": [
+                        "netflix.com"
+                    ],
+                    "contains": [
+                        "domain"
+                    ]
                 }
             ],
             "render": {
@@ -674,7 +705,7 @@
                     "column_order": 0
                 },
                 {
-                    "data_path": "action_result.data.*.domain",
+                    "data_path": "action_result.data.*.*.domain",
                     "data_type": "string",
                     "contains": [
                         "domain"
@@ -699,6 +730,26 @@
                 {
                     "data_path": "summary.total_objects_successful",
                     "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.summary.domain",
+                    "data_type": "string",
+                    "example_values": [
+                        "netflix.com"
+                    ],
+                    "contains": [
+                        "domain"
+                    ]
+                },
+                {
+                    "data_path": "action_result.summary.domain",
+                    "data_type": "string",
+                    "example_values": [
+                        "netflix.com"
+                    ],
+                    "contains": [
+                        "domain"
+                    ]
                 }
             ],
             "render": {
@@ -759,9 +810,6 @@
                 {
                     "data_path": "action_result.parameter.record_type",
                     "data_type": "string",
-                    "contains": [
-                        "*"
-                    ],
                     "column_name": "record_type",
                     "column_order": 1
                 },
@@ -772,7 +820,7 @@
                     "column_order": 2
                 },
                 {
-                    "data_path": "action_result.data.*.ip",
+                    "data_path": "action_result.data.*.results.*.ip",
                     "data_type": "string",
                     "column_name": "ip",
                     "column_order": 3,
@@ -784,7 +832,7 @@
                     ]
                 },
                 {
-                    "data_path": "action_result.data.*.first_seen",
+                    "data_path": "action_result.data.*.results.*.first_seen",
                     "data_type": "string",
                     "column_name": "first_seen",
                     "column_order": 4,
@@ -793,7 +841,7 @@
                     ]
                 },
                 {
-                    "data_path": "action_result.data.*.last_seen",
+                    "data_path": "action_result.data.*.results.*.last_seen",
                     "data_type": "string",
                     "column_name": "last_seen",
                     "column_order": 5,
@@ -802,7 +850,7 @@
                     ]
                 },
                 {
-                    "data_path": "action_result.data.*.u'organizations",
+                    "data_path": "action_result.data.*.results.*.organizations",
                     "data_type": "string",
                     "column_name": "organization",
                     "column_order": 6
@@ -818,6 +866,16 @@
                 {
                     "data_path": "summary.total_objects_successful",
                     "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.summary.domain",
+                    "data_type": "string",
+                    "example_values": [
+                        "netflix.com"
+                    ],
+                    "contains": [
+                        "domain"
+                    ]
                 }
             ],
             "render": {
