@@ -6,7 +6,6 @@
 import phantom.app as phantom
 from phantom.base_connector import BaseConnector
 from phantom.action_result import ActionResult
-from securitytrails import *
 
 # Usage of the consts file is recommended
 # from securitytrails_consts import *
@@ -125,6 +124,15 @@ class SecuritytrailsConnector(BaseConnector):
         # Create a URL to connect to
         url = self._base_url + endpoint
 
+        # Retrieve API Key
+        api_key = config.get('api_key')
+
+        # Update headers
+        if headers:
+            headers = headers
+        else:
+            headers = {'APIKEY': api_key}
+
         try:
             r = request_func(
                             url,
@@ -143,73 +151,50 @@ class SecuritytrailsConnector(BaseConnector):
         # Add an action result object to self (BaseConnector) to represent the action for this param
         action_result = self.add_action_result(ActionResult(dict(param)))
 
-        # Add config to init variable to get root API Key
-        config = self.get_config()
+        # Create a new Threat Miner Python Object
+        endpoint = '/ping/'
 
-        # Place api key in own self variable.
-        api_key = config.get('api_key')
-
-        # Create a new Security Trails Python Object
-        s = SecurityTrails(api_key=api_key)
-
-        # NOTE: test connectivity does _NOT_ take any parameters
-        # i.e. the param dictionary passed to this handler will be empty.
-        # Also typically it does not add any data into an action_result either.
-        # The status and progress messages are more important.
+        # Make connection to the SecurityTrails endpoint
+        ret_val, response = self._make_rest_call(endpoint, action_result)
 
         # Connect to Phantom Endpoint
-        self.save_progress("Connecting to endpoint")
+        self.save_progress("Connecting to SecurityTrails test endpoint")
 
-        if s.test_connect() is False:
+        if (phantom.is_fail(ret_val)):
             # the call to the 3rd party device or service failed, action result should contain all the error details
             # so just return from here
-            self.save_progress("Test Connectivity Failed.")
-            return action_result.get_status()
+            message = "Test Connectivity Failed for SecurityTrails"
+            return action_result.set_status(phantom.APP_ERROR, status_message=message)
+
         # Return success
         self.save_progress("Test Connectivity Passed")
         return action_result.set_status(phantom.APP_SUCCESS)
 
     def _handle_lookup_domain(self, param):
 
-        # Implement the handler here
-        # use self.save_progress(...) to send progress messages back to the platform
+        # Adding action handler message
         self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
 
         # Add an action result object to self (BaseConnector) to represent the action for this param
         action_result = self.add_action_result(ActionResult(dict(param)))
 
-        # Add config to init variable to get root API Key
-        config = self.get_config()
-
-        # Place api key in own self variable.
-        api_key = config.get('api_key')
-
-        # Create a new Security Trails Python Object
-        s = SecurityTrails(api_key=api_key)
-
         # Pass domain to the search
         domain = param['domain']
 
         # Issue request to get_domain
-        result = s.get_domain(domain)
+        endpoint = '/domain/{}'.format(domain)
 
-        if (result is False):
-            # the call to the 3rd party device or service failed, action result should contain all the error details
-            # so just return from here
-            return action_result.get_status()
+        # Make connection to the SecurityTrails endpoint
+        ret_val, response = self._make_rest_call(endpoint, action_result)
+
+        # Connect to Phantom Endpoint
+        self.save_progress("Connecting to endpoint")
 
         if (phantom.is_fail(ret_val)):
             # the call to the 3rd party device or service failed, action result should contain all the error details
             # so just return from here
-            return action_result.get_status()
-
-        # Test to see if response can be parsed
-        if json.loads(result):
-            response = json.loads(result)
-
-        # If it cannot be parsed throw error message
-        else:
-            return action_result.set_status(phantom.APP_ERROR, status_message="Error Passing JSON output.  Error Message: {}".format(result))
+            message = "Failed Response to Lookup Domain."
+            return action_result.set_status(phantom.APP_ERROR, status_message=message)
 
         # Create new python dictionary to store output
         data_output = {}
@@ -253,49 +238,29 @@ class SecuritytrailsConnector(BaseConnector):
 
     def _handle_whois_domain(self, param):
 
-        # Implement the handler here
-        # use self.save_progress(...) to send progress messages back to the platform
+        # Adding action handler message
         self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
 
         # Add an action result object to self (BaseConnector) to represent the action for this param
         action_result = self.add_action_result(ActionResult(dict(param)))
 
-        # Add an action result object to self (BaseConnector) to represent the action for this param
-        action_result = self.add_action_result(ActionResult(dict(param)))
-
-        # Add config to init variable to get root API Key
-        config = self.get_config()
-
-        # Place api key in own self variable.
-        api_key = config.get('api_key')
-
-        # Create a new Security Trails Python Object
-        s = SecurityTrails(api_key=api_key)
-
         # Pass domain to the search
         domain = param['domain']
 
-        # Issue request to get_whois
-        result = s.get_whois(domain)
+        # Issue request to get_domain
+        endpoint = '/domain/{}/whois'.format(domain)
 
-        # If the result fails
-        if (result is False):
-            # the call to the 3rd party device or service failed, action result should contain all the error details
-            # so just return from here
-            return action_result.get_status()
+        # Make connection to the SecurityTrails endpoint
+        ret_val, response = self._make_rest_call(endpoint, action_result)
+
+        # Connect to Phantom Endpoint
+        self.save_progress("Connecting to endpoint")
 
         if (phantom.is_fail(ret_val)):
             # the call to the 3rd party device or service failed, action result should contain all the error details
             # so just return from here
-            return action_result.get_status()
-
-        # Test to see if response can be parsed
-        if json.loads(result):
-            response = json.loads(result)
-
-        # If it cannot be parsed throw error message
-        else:
-            return action_result.set_status(phantom.APP_ERROR, status_message="Error Passing JSON output.  Error Message: {}".format(result))
+            message = "Failed Response to whois Domain."
+            return action_result.set_status(phantom.APP_ERROR, status_message=message)
 
         # Create new python dictionary to store output
         data_output = response
@@ -313,49 +278,29 @@ class SecuritytrailsConnector(BaseConnector):
 
     def _handle_whois_history(self, param):
 
-        # Implement the handler here
-        # use self.save_progress(...) to send progress messages back to the platform
+        # Adding action handler message
         self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
 
         # Add an action result object to self (BaseConnector) to represent the action for this param
         action_result = self.add_action_result(ActionResult(dict(param)))
 
-        # Add an action result object to self (BaseConnector) to represent the action for this param
-        action_result = self.add_action_result(ActionResult(dict(param)))
-
-        # Add config to init variable to get root API Key
-        config = self.get_config()
-
-        # Place api key in own self variable.
-        api_key = config.get('api_key')
-
-        # Create a new Security Trails Python Object
-        s = SecurityTrails(api_key=api_key)
-
         # Pass domain to the search
         domain = param['domain']
 
-        # Issue request to get_whois
-        result = s.get_history_whois(domain)
+        # Issue request to history whois
+        endpoint = '/history/{}/whois?page=1'.format(domain)
 
-        # If the result fails
-        if (result is False):
-            # the call to the 3rd party device or service failed, action result should contain all the error details
-            # so just return from here
-            return action_result.get_status()
+        # Make connection to the SecurityTrails endpoint
+        ret_val, response = self._make_rest_call(endpoint, action_result)
+
+        # Connect to Phantom Endpoint
+        self.save_progress("Downloading Page 1 of output")
 
         if (phantom.is_fail(ret_val)):
             # the call to the 3rd party device or service failed, action result should contain all the error details
             # so just return from here
-            return action_result.get_status()
-
-        # Test to see if response can be parsed
-        if json.loads(result):
-            response = json.loads(result)
-
-        # If it cannot be parsed throw error message
-        else:
-            return action_result.set_status(phantom.APP_ERROR, status_message="Error Passing JSON output.  Error Message: {}".format(result))
+            message = "Failed Response to whois history."
+            return action_result.set_status(phantom.APP_ERROR, status_message=message)
 
         # Create new python dictionary to store output
         data_output = response
@@ -365,7 +310,7 @@ class SecuritytrailsConnector(BaseConnector):
 
         # Add a dictionary that is made up of the most important values from data into the summary
         summary = action_result.update_summary({})
-        summary['domain'] = data_output['domain']
+        summary['domain'] = domain
 
         # Return success, no need to set the message, only the status
         # BaseConnector will create a textual message based off of the summary dictionary
@@ -373,12 +318,8 @@ class SecuritytrailsConnector(BaseConnector):
 
     def _handle_domain_searcher(self, param):
 
-        # Implement the handler here
-        # use self.save_progress(...) to send progress messages back to the platform
+        # Adding action handler message
         self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
-
-        # Add an action result object to self (BaseConnector) to represent the action for this param
-        action_result = self.add_action_result(ActionResult(dict(param)))
 
         # Add an action result object to self (BaseConnector) to represent the action for this param
         action_result = self.add_action_result(ActionResult(dict(param)))
@@ -389,46 +330,84 @@ class SecuritytrailsConnector(BaseConnector):
         # Place api key in own self variable.
         api_key = config.get('api_key')
 
-        # Create a new Security Trails Python Object
-        s = SecurityTrails(api_key=api_key)
+        # Update endpoint URL
+        endpoint = '/search/list'
 
-        # Pass domain to the search
+        # Create new header to pass data
+        header_new = {'Content-Type': 'application/json', 'APIKEY': api_key}
+
+        # Pass filter to the search
         search_filter = param['filter']
 
-        # Pass domain to the search
-        search_filter_string = param['filter']
+        # Pass search filter string to the search
+        search_filter_string = param['filterstring']
 
-        # Pass domain to the search
+        # Pass keyword to the search
         keyword = param['keyword']
 
+        # If keyword is not empty
         if keyword:
-            params = {search_filter: search_filter_string, "keyword": keyword }
+            output_params = {search_filter: search_filter_string, "keyword": keyword }
 
+        # If keyword is empty
         else:
             # Create parameter variable to pass as kwargs to the result variable
-            params = {search_filter: search_filter_string}
+            output_params = {search_filter: search_filter_string}
 
-        # Issue request to get_whois
-        result = s.domain_searcher(**params)
+        # Establish empty filter dictionary object with a filter list.
+        values = {}
+
+        # Array of valid keywords
+        valid_filter = [
+            "ipv4",
+            "ipv6",
+            "mx",
+            "ns",
+            "cname",
+            "subdomain",
+            "apex_domain",
+            "soa_email",
+            "tld",
+            "whois_email",
+            "whois_street1",
+            "whois_street2",
+            "whois_street3",
+            "whois_street4",
+            "whois_telephone",
+            "whois_postalCode",
+            "whois_organization",
+            "whois_name",
+            "whois_fax",
+            "whois_city",
+            "keyword"]
+
+        # For key value pair in the params dictionary
+        for key, value in output_params.iteritems():
+            # If the key is not a valid filter, throw an error
+            if key not in valid_filter:
+                message = ("{} is not a valid filter. Ignoring this key. "
+                           "Valid formats are: {}".format(str(key),
+                           str(", ".join(valid_filter))))
+                return action_result.set_status(phantom.APP_ERROR, status_message=message)
+            # Else, it is a valid filter
+            else:
+                values['filter'] = output_params
+
+        # If the filter key in the values dictionary is not empty
+        if values['filter']:
+            json_dumps_values = json.dumps(values)
+            ret_val, response = self._make_rest_call(endpoint, action_result, params=None, headers=header_new, method="post", data=json_dumps_values)
 
         # If the result fails
-        if (result is False):
-            # the call to the 3rd party device or service failed, action result should contain all the error details
-            # so just return from here
-            return action_result.get_status()
-
         if (phantom.is_fail(ret_val)):
-            # the call to the 3rd party device or service failed, action result should contain all the error details
-            # so just return from here
-            return action_result.get_status()
+                    # the call to the 3rd party device or service failed, action result should contain all the error details
+                    # so just return from here
+                    message = ("Domain Searcher Failed: {}"
+                             " request received a non 200 response.".format(endpoint))
+                    return action_result.set_status(phantom.APP_ERROR, status_message=message)
 
-        # Test to see if response can be parsed
-        if json.loads(result):
-            response = json.loads(result)
-
-        # If it cannot be parsed throw error message
-        else:
-            return action_result.set_status(phantom.APP_ERROR, status_message="Error Passing JSON output.  Error Message: {}".format(result))
+        # Create new python dictionary to store output
+        data_output = {}
 
         # Create new python dictionary to store output
         data_output = response
@@ -438,7 +417,7 @@ class SecuritytrailsConnector(BaseConnector):
 
         # Add a dictionary that is made up of the most important values from data into the summary
         summary = action_result.update_summary({})
-        summary['domain'] = params
+        summary['filter'] = output_params
 
         # Return success, no need to set the message, only the status
         # BaseConnector will create a textual message based off of the summary dictionary
@@ -446,53 +425,39 @@ class SecuritytrailsConnector(BaseConnector):
 
     def _handle_domain_category(self, param):
 
-        # Implement the handler here
-        # use self.save_progress(...) to send progress messages back to the platform
+        # Adding action handler message
         self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
 
         # Add an action result object to self (BaseConnector) to represent the action for this param
         action_result = self.add_action_result(ActionResult(dict(param)))
 
-        # Add an action result object to self (BaseConnector) to represent the action for this param
-        action_result = self.add_action_result(ActionResult(dict(param)))
-
-        # Add config to init variable to get root API Key
-        config = self.get_config()
-
-        # Place api key in own self variable.
-        api_key = config.get('api_key')
-
-        # Create a new Security Trails Python Object
-        s = SecurityTrails(api_key=api_key)
-
         # Pass domain to the search
         domain = param['domain']
 
-        # Issue request to get_whois
-        result = s.get_tags(domain)
+        # Issue request to the tags endpoint
+        endpoint = '/domain/{}/tags'.format(domain)
 
-        # If the result fails
-        if (result is False):
-            # the call to the 3rd party device or service failed, action result should contain all the error details
-            # so just return from here
-            return action_result.get_status()
+        # Make connection to the SecurityTrails endpoint
+        ret_val, response = self._make_rest_call(endpoint, action_result)
+
+        # Connect to Phantom Endpoint
+        self.save_progress("Connecting to endpoint")
 
         if (phantom.is_fail(ret_val)):
             # the call to the 3rd party device or service failed, action result should contain all the error details
             # so just return from here
-            return action_result.get_status()
-
-        # Test to see if response can be parsed
-        if json.loads(result):
-            response = json.loads(result)
-
-        # If it cannot be parsed throw error message
-        else:
-            return action_result.set_status(phantom.APP_ERROR, status_message="Error Passing JSON output.  Error Message: {}".format(result))
+            message = "Failed Response to domain category."
+            return action_result.set_status(phantom.APP_ERROR, status_message=message)
 
         # If domain has no tags
-        if len(response['tags'] == 0):
-            response['tags'] = "None"
+        try:
+            response['tags'][0]
+
+        except:
+            response['tags'] = "No Results"
+
+        # Create new python dictionary to store output
+        data_output = {}
 
         # Create new python dictionary to store output
         data_output = response
@@ -502,7 +467,7 @@ class SecuritytrailsConnector(BaseConnector):
 
         # Add a dictionary that is made up of the most important values from data into the summary
         summary = action_result.update_summary({})
-        summary['domain'] = data_output['domain']
+        summary['domain'] = domain
         summary['tags'] = data_output['tags']
 
         # Return success, no need to set the message, only the status
@@ -511,49 +476,29 @@ class SecuritytrailsConnector(BaseConnector):
 
     def _handle_domain_subdomain(self, param):
 
-                # Implement the handler here
-        # use self.save_progress(...) to send progress messages back to the platform
+        # Adding action handler message
         self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
 
         # Add an action result object to self (BaseConnector) to represent the action for this param
         action_result = self.add_action_result(ActionResult(dict(param)))
 
-        # Add an action result object to self (BaseConnector) to represent the action for this param
-        action_result = self.add_action_result(ActionResult(dict(param)))
-
-        # Add config to init variable to get root API Key
-        config = self.get_config()
-
-        # Place api key in own self variable.
-        api_key = config.get('api_key')
-
-        # Create a new Security Trails Python Object
-        s = SecurityTrails(api_key=api_key)
-
         # Pass domain to the search
         domain = param['domain']
 
-        # Issue request to get_subdomain
-        result = s.get_subdomain(domain)
+        # Issue request to the subdomains endpoint
+        endpoint = '/domain/{}/subdomains'.format(domain)
 
-        # If the result fails
-        if (result is False):
-            # the call to the 3rd party device or service failed, action result should contain all the error details
-            # so just return from here
-            return action_result.get_status()
+        # Make connection to the SecurityTrails endpoint
+        ret_val, response = self._make_rest_call(endpoint, action_result)
+
+        # Connect to Phantom Endpoint
+        self.save_progress("Connecting to endpoint")
 
         if (phantom.is_fail(ret_val)):
             # the call to the 3rd party device or service failed, action result should contain all the error details
             # so just return from here
-            return action_result.get_status()
-
-        # Test to see if response can be parsed
-        if json.loads(result):
-            response = json.loads(result)
-
-        # If it cannot be parsed throw error message
-        else:
-            return action_result.set_status(phantom.APP_ERROR, status_message="Error Passing JSON output.  Error Message: {}".format(result))
+            message = "Failed Response to domain subdomain."
+            return action_result.set_status(phantom.APP_ERROR, status_message=message)
 
         # Create an empty array for pushing subdomains into
         outputArray = []
@@ -578,66 +523,83 @@ class SecuritytrailsConnector(BaseConnector):
 
     def _handle_domain_history(self, param):
 
-                # Implement the handler here
-        # use self.save_progress(...) to send progress messages back to the platform
+        # Adding action handler message
         self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
 
         # Add an action result object to self (BaseConnector) to represent the action for this param
         action_result = self.add_action_result(ActionResult(dict(param)))
 
-        # Add an action result object to self (BaseConnector) to represent the action for this param
-        action_result = self.add_action_result(ActionResult(dict(param)))
-
-        # Add config to init variable to get root API Key
-        config = self.get_config()
-
-        # Place api key in own self variable.
-        api_key = config.get('api_key')
-
-        # Create a new Security Trails Python Object
-        s = SecurityTrails(api_key=api_key)
-
         # Pass domain to the search
         domain = param['domain']
 
-        # Pass domain to the search
+        # Pass record type to the search
         record_type = param['record_type']
 
-        # Issue request to get_whois
-        result = s.get_history_dns(domain, record_type)
+        # Convert the record_type to lower case
+        record_type = record_type.lower()
 
-        # If the result fails
-        if (result is False):
-            # the call to the 3rd party device or service failed, action result should contain all the error details
-            # so just return from here
-            return action_result.get_status()
+        # Valid record_type type variables
+        type_check = ['a', 'aaaa', 'mx', 'ns', 'txt', 'soa']
+
+        if record_type in type_check:
+            # Validate record_type type variable
+            endpoint = '/history/{}/dns/{}?page=1'.format(domain, record_type)
+
+            # Make connection to the history dns endpoint
+            ret_val, response = self._make_rest_call(endpoint, action_result)
+        # Request failed returning false and logging an error
+        else:
+            message = "Incorrect record_type {}. Allowed Records {}".format(
+                record_type, ", ".join(type_check)
+            )
+            return action_result.set_status(phantom.APP_ERROR, status_message=message)
+
+        # Make connection to endpoint
+        ret_val, response = self._make_rest_call(endpoint, action_result)
+
+        # Connect to Phantom Endpoint
+        self.save_progress("Downloading page 1 of output")
 
         if (phantom.is_fail(ret_val)):
             # the call to the 3rd party device or service failed, action result should contain all the error details
             # so just return from here
-            return action_result.get_status()
-
-        # Test to see if response can be parsed
-        if json.loads(result):
-            response = json.loads(result)
-
-        # If it cannot be parsed throw error message
-        else:
-            return action_result.set_status(phantom.APP_ERROR, status_message="Error Passing JSON output.  Error Message: {}".format(result))
+            message = "Failed Response to domain history."
+            return action_result.set_status(phantom.APP_ERROR, status_message=message)
 
         # Format output
         outputArray = []
-        for a in response['records']:
-            for value in a['values']:
-                option = {}
-                if len(a['organizations']) == 1:
-                    option['organizations'] = a['organizations'][0]
-                else:
-                    option['organizations'] = a['organizations']
-                option['first_seen'] = a['first_seen']
-                option['last_seen'] = a['last_seen']
-                option['ip'] = value['ip']
-                outputArray.append(option)
+        i = 1
+        # While i is less than the total pages
+        while i <= response['pages']:
+            # For eachr record in the response
+            for a in response['records']:
+                # For each value in the response
+                for value in a['values']:
+                    # Create an empty dictionary
+                    option = {}
+                    # If the organization length is equal to 1
+                    if len(a['organizations']) == 1:
+                        # Select the first org in the array
+                        option['organizations'] = a['organizations'][0]
+                    else:
+                        option['organizations'] = a['organizations']
+                    # Add fields that are required for investigation
+                    option['first_seen'] = a['first_seen']
+                    option['last_seen'] = a['last_seen']
+                    option['ip'] = value['ip']
+                    # Append the results
+                    outputArray.append(option)
+            i += 1
+            endpoint = '/history/{}/dns/{}?page={}'.format(domain, record_type, i)
+            # Connect to Phantom Endpoint
+            self.save_progress("Downloading Page {} of output".format(i))
+            # Make connection to endpoint
+            ret_val, response = self._make_rest_call(endpoint, action_result)
+            if (phantom.is_fail(ret_val)):
+                # the call to the 3rd party device or service failed, action result should contain all the error details
+                # so just return from here
+                message = "Failed Response to domain history for page {} of response.".format(i)
+                return action_result.set_status(phantom.APP_ERROR, status_message=message)
 
         # Convert the output into a dictionary
         results = {"results": outputArray, "domain": domain}

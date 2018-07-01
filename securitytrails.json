@@ -10,13 +10,21 @@
     "product_version_regex": ".*",
     "publisher": "Domenico Perre",
     "license": "Copyright (c) Domenico Perre, 2018",
-    "app_version": "1.0.0",
+    "app_version": "1.1.0",
     "utctime_updated": "2018-04-30T10:29:53.916185Z",
     "package_name": "phantom_securitytrails",
     "main_module": "securitytrails_connector.pyc",
     "min_phantom_version": "3.5.205",
-    "app_wizard_version": "1.0.0",
+    "app_wizard_version": "1.1.0",
     "configuration": {
+        "base_url": {
+            "description": "Base URL for api request",
+            "data_type": "string",
+            "required": true,
+            "value_list": [],
+            "default": "https://api.securitytrails.com/v1/",
+            "order": 0
+        },
         "api_key": {
             "description": "API Key for Connectivity",
             "data_type": "string",
